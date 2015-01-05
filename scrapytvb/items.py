@@ -5,10 +5,11 @@
 
 from scrapy.item import Item, Field
 
-
 class Forum81Item(Item):
-    # define the fields for your item here like:
-    latest_episode = Field()
-    provider = Field()
+    first_episode = Field()
+    last_episode = Field()
+    author = Field()
     title = Field()
-    episodes = Field()
+    datePosted = Field()
+
+

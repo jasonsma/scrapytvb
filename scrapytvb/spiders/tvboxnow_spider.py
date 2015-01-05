@@ -13,19 +13,20 @@ class LoginSpider(BaseSpider):
         if 'tvbgetter' in response.body:
             self.log("Successful login. Time to crawl.")
             open('forum-8-1', 'wb').write(response.body)
-            xpath = '/html/body[@id="forumdisplay"]/div[@id="wrap"]/div'\
-                    '[@class="main"]/div[@class="content"]/table/tbody/tr'\
-                    '/td[1]/div[@id="threadlist"]/form[@id="moderate"]'\
-                    '/table[@class="datatable"]/tbody/tr/th[@class="subject '\
-                    'hot"]/span[@id]/a'
-            xpath = "//table[@class='datatable']/tbody[@id]/tr/th[@class='subject hot']/span[@id]/a/text()"
-            # example selected
-            sel = Selector(response)
-            lines = sel.xpath(xpath).extract()
-            for l in lines:
-                l.encode('utf-8')
-                print l
-            #print sel.xpath(xpath).extract()
+            #xpath_row = "//table[@class='datatable']/tbody[@id]/tr"
+            #xpath_title = "//table[@class='datatable']/tbody[@id]/tr/th[@class='subject hot']/span[@id]/a/text()"
+            #xpath_author ="//table[@class='datatable']/tbody[@id]/tr/td[@class='author']/cite/a/text()"
+            #xpath_date = "//table[@class='datatable']/tbody[@id]/tr/td[@class='author']/em"
+
+            entries = response.xpath("//table[@class='datatable']/tbody[@id]/tr")
+            for entry in entries:
+                title = entry.xpath("th[@class='subject hot']/span[@id]/a/text()").extract()
+                author = entry.xpath("td[@class='author']/cite/a/text()").extract()
+                date = entry.xpath("td[@class='author']/em/text()").extract()
+                if title and author and date:
+                    title[0].encode('utf-8')
+                    print title[0], author[0], date[0]
+
             return None
         else:
             return [FormRequest.from_response(response,

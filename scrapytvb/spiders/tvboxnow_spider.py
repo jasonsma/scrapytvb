@@ -23,9 +23,10 @@ class LoginSpider(BaseSpider):
                 title = entry.xpath("th[@class='subject hot']/span[@id]/a/text()").extract()
                 author = entry.xpath("td[@class='author']/cite/a/text()").extract()
                 date = entry.xpath("td[@class='author']/em/text()").extract()
+                link = entry.xpath("th[@class='subject hot']/span[@id]/a/@href").extract()
                 if title and author and date:
                     title[0].encode('utf-8')
-                    print title[0], author[0], date[0]
+                    print title[0], author[0], date[0], link[0]
 
             return None
         else:
